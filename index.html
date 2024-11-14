@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Times de Futebol - Vue.js</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    input {
+      margin-bottom: 10px;
+    }
+    table {
+      margin-top: 20px;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+  <h1>Cadastro de Times de Futebol</h1>
+
+  <form @submit.prevent="adicionarTime">
+    <label for="nomeTime">Nome do Time:</label>
+    <input type="text" v-model="novoTime.nome" required><br>
+
+    <label for="paisOrigem">País de Origem:</label>
+    <input type="text" v-model="novoTime.pais" required><br>
+
+    <label for="titulos">Número de Títulos:</label>
+    <input type="number" v-model="novoTime.titulos" required><br>
+
+    <button type="submit">Cadastrar Time</button>
+  </form>
+
+  <h2>Lista de Times</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Nome do Time</th>
+        <th>País de Origem</th>
+        <th>Número de Títulos</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(time, index) in times" :key="index">
+        <td>{{ time.nome }}</td>
+        <td>{{ time.pais }}</td>
+        <td>{{ time.titulos }}</td>
+        <td><button @click="removerTime(index)">Remover</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        novoTime: {
+          nome: '',
+          pais: '',
+          titulos: ''
+        },
+        times: []
+      };
+    },
+    methods: {
+      adicionarTime() {
+        if (this.novoTime.nome && this.novoTime.pais && this.novoTime.titulos) {
+          // Adiciona uma cópia do objeto 'novoTime' à lista de times
+          this.times.push({ ...this.novoTime });
+          this.limparFormulario();
+        }
+      },
+      removerTime(index) {
+        // Remove o time da lista com base no índice
+        this.times.splice(index, 1);
+      },
+      limparFormulario() {
+        // Reseta o formulário
+        this.novoTime.nome = '';
+        this.novoTime.pais = '';
+        this.novoTime.titulos = '';
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
